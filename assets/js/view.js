@@ -44,6 +44,7 @@ const view = {
         if (model.cart.length === 0) {
             cartContainer.innerHTML = '<tr><td colspan="5" class="text-center">Keranjang Anda kosong.</td></tr>';
             view.updateTotalPrice();
+            view.updateFloatingCart();
             return;
         }
     
@@ -66,10 +67,41 @@ const view = {
         });
     
         view.updateTotalPrice();
+        view.updateFloatingCart();
     },
     updateTotalPrice: () => {
         const totalPrice = model.cart.reduce((total, cartItem) => total + (cartItem.price * cartItem.quantity), 0);
         document.getElementById("total-price").innerText = `Total: Rp${totalPrice}`;
+    },
+    updateFloatingCart: () => {
+        const floatingCartItems = document.getElementById('floating-cart-items');
+        const floatingCartCount = document.getElementById('cart-count');
+        const floatingTotalPrice = document.getElementById('floating-total-price');
+        
+        floatingCartItems.innerHTML = '';
+        
+        floatingCartCount.innerText = model.cart.reduce((total, item) => total + item.quantity, 0);
+        
+        const totalPrice = model.cart.reduce((total, cartItem) => total + (cartItem.price * cartItem.quantity), 0);
+        floatingTotalPrice.innerText = `Total: Rp${totalPrice}`;
+        
+        model.cart.forEach(item => {
+            const cartItemElement = document.createElement('div');
+            cartItemElement.classList.add('floating-cart-item');
+            cartItemElement.innerHTML = `
+                <div class="floating-cart-item-details">
+                    <strong>${item.name}</strong>
+                    <div>Rp${item.price} x ${item.quantity}</div>
+                </div>
+                <div class="floating-cart-item-actions">
+                    <button class="btn btn-sm btn-outline-primary change-quantity" data-id="${item.id}" data-action="decrease">-</button>
+                    <span class="mx-1">${item.quantity}</span>
+                    <button class="btn btn-sm btn-outline-primary change-quantity" data-id="${item.id}" data-action="increase">+</button>
+                    <button class="btn btn-sm btn-outline-danger remove-item" data-id="${item.id}"><i class="fa fa-trash"></i></button>
+                </div>
+            `;
+            floatingCartItems.appendChild(cartItemElement);
+        });
     },
     showNotification: (message) => {
         const notificationBox = document.getElementById("notification");

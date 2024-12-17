@@ -42,66 +42,60 @@
             <h3>Menu</h3>
             <div id="menu-list" class="row"></div>
         </div>
-        <div id="cart-section" class="mt-5">
-            <h3>Keranjang</h3>
-            <div id="cart-list" class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Jumlah</th>
-                            <th>Harga</th>
-                            <th>Subtotal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cart-items"></tbody>
-                </table>
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-                <h4 id="total-price">Total: Rp0</h4>
-                <button id="checkout-btn" class="btn btn-success">Checkout</button>
+    </div>
+
+    <div id="floating-cart" class="floating-cart">
+        <div class="floating-cart-header">
+            <h4>Keranjang</h4>
+            <span id="cart-count" class="cart-count">0</span>
+        </div>
+        <div id="floating-cart-content" class="floating-cart-content">
+            <div id="floating-cart-items"></div>
+            <div class="floating-cart-footer">
+                <div id="floating-total-price" class="floating-total-price">Total: Rp0</div>
+                <button id="floating-checkout-btn" class="btn btn-success btn-sm">Checkout</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal untuk Checkout Berhasil -->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Detail Keranjang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="cart-list" class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Subtotal</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex justify-content-between w-100">
+                        <h4 id="total-price">Total: Rp0</h4>
+                        <button id="checkout-btn" class="btn btn-success">Checkout</button>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="successModalLabel">Checkout Berhasil</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Terima kasih telah berbelanja! Pesanan Anda telah diproses.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Oke</button>
-                </div>
-            </div>
-        </div>
     </div>
-
-    <!-- Modal untuk Keranjang Kosong -->
+    
     <div class="modal fade" id="emptyCartModal" tabindex="-1" aria-labelledby="emptyCartModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="emptyCartModalLabel">Keranjang Kosong</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Mohon pilih makanan atau minuman terlebih dahulu sebelum melakukan checkout.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Oke</button>
-                </div>
-            </div>
-        </div>
     </div>
-    
-    
     <script src="assets/js/model.js"></script>
     <script src="assets/js/view.js"></script>
     <script src="assets/js/controller.js"></script>
@@ -109,7 +103,5 @@
         controller.init();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    
 </body>
 </html>

@@ -2,13 +2,20 @@ const controller = {
     init: () => {
         view.renderCategories();
         view.renderMenu("all", "all");
-        document.getElementById("category-select").addEventListener("change", controller.filterSubcategories);
-        document.getElementById("subcategory-select").addEventListener("change", controller.filterMenu);
-        document.getElementById("checkout-btn").addEventListener("click", controller.checkoutCart);
         
-        // Menambahkan event listener untuk tombol di keranjang
+        document.getElementById("floating-checkout-btn").addEventListener("click", () => {
+            if (model.cart.length === 0) {
+                view.showNotification("Keranjang kosong! Silakan tambah makanan/minuman.");
+                return;
+            }
+            
+            const cartModal = new bootstrap.Modal(document.getElementById('cartModal'));
+            cartModal.show();
+        });
+        
+        document.getElementById("checkout-btn").addEventListener("click", controller.checkoutCart);
+
         document.addEventListener('click', (event) => {
-            // Perubahan kuantitas (+ atau -)
             if (event.target.classList.contains('change-quantity')) {
                 const itemId = parseInt(event.target.getAttribute('data-id'));
                 const action = event.target.getAttribute('data-action');
@@ -24,7 +31,6 @@ const controller = {
                 }
             }
 
-            // Menghapus item
             if (event.target.classList.contains('remove-item') || event.target.closest('.remove-item')) {
                 const itemId = parseInt(event.target.getAttribute('data-id') || event.target.closest('.remove-item').getAttribute('data-id'));
                 model.cart = model.cart.filter(item => item.id !== itemId);
@@ -62,11 +68,22 @@ const controller = {
 
     checkoutCart: () => {
         if (model.cart.length === 0) {
-            view.showModal('emptyCartModal');
-        } else {
-            model.cart = []; // Kosongkan keranjang
-            view.updateCartView();
-            view.showModal('successModal');
+            view.showNotification("Keranjang kosong! Silakan tambah makanan/minuman.");
+            return;
         }
+
+        const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+        if (cartModal) {
+            cartModal.hide();
+        }
+
+        view.showNotification("Checkout berhasil! Terima kasih telah berbelanja.");
+
+        model.cart = [];
+        view.updateCartView();
+
+        document.getElementById('floating-cart-items').innerHTML = '';
+        document.getElementById('cart-count').innerText = '0';
+        document.getElementById('floating-total-price').innerText = 'Total: Rp0';
     }
 };
